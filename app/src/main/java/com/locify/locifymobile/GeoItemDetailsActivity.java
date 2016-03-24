@@ -6,7 +6,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -53,12 +52,10 @@ public class GeoItemDetailsActivity extends FragmentActivity
 
         String detailsJson = getIntent().getStringExtra(IDEM_DETAILS);
         float distance = getIntent().getFloatExtra(IDEM_DISTANCE, 0.0f);
-        Log.d(TAG, "Item JSON: " + detailsJson);
         GeoItemDetails itemDetails = null;
         if(detailsJson != null) {
             Gson gson = new Gson();
             itemDetails = gson.fromJson(detailsJson, GeoItemDetails.class);
-            Log.d(TAG, "Item: " + itemDetails);
         }
 
         pagerAdapter = new ItemDetailsPagerAdapter(

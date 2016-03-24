@@ -9,11 +9,11 @@ import java.util.Date;
  */
 public class LogData {
     public ItemOwner user;
-    @SerializedName("cache_code")
+//    @SerializedName("cache_code")
     public String cacheCode;
     public Date date;
     public String type;
-    @SerializedName("was_recommended")
+//    @SerializedName("was_recommended")
     public boolean wasRecommended;
     public String comment;
 

@@ -7,6 +7,15 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.reflect.TypeToken;
 import com.locify.locifymobile.com.locify.locifymobile.model.GeoResult;
 import com.locify.locifymobile.com.locify.locifymobile.model.LogItem;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchResultBuffer;
@@ -21,7 +30,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -37,10 +48,27 @@ import cz.msebera.android.httpclient.message.BasicNameValuePair;
  */
 public class LocifyClient {
     private static final String TAG = "LocifyClient";
+//    private static final String DATE_FORMAT = "yyyy-mm-dd'T'hh:mm:ss";
     public static final String LOCIFY_SERVER_BASE_URL = "http://10.0.2.2:9000";
     public static final String CONTENT_TYPE_FORM_URL_ENCODED = "application/x-www-form-urlencoded";
     public static final String CONTENT_TYPE_JSON = "application/json";
     private AsyncHttpClient client;
+
+    JsonSerializer<Date> dateSerializer = new JsonSerializer<Date>() {
+        @Override
+        public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext
+                context) {
+            return src == null ? null : new JsonPrimitive(src.getTime());
+        }
+    };
+
+    JsonDeserializer<Date> dateDeserializer = new JsonDeserializer<Date>() {
+        @Override
+        public Date deserialize(JsonElement json, Type typeOfT,
+                                JsonDeserializationContext context) throws JsonParseException {
+            return json == null ? null : new Date(json.getAsLong());
+        }
+    };
 
     private static LocifyClient instance;
 
@@ -123,14 +151,9 @@ public class LocifyClient {
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        try {
-                            String httpBody = new String(responseBody, "UTF-8");
-                        } catch (UnsupportedEncodingException uee) {
-                            Log.e(TAG, "Unsupported encoding");
-                        }
-
                         InputStream contentStream = new ByteArrayInputStream(responseBody);
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, dateSerializer)
+                                .registerTypeAdapter(Date.class, dateDeserializer).create();
                         Reader reader = new InputStreamReader(contentStream);
                         GeoResult response = gson.fromJson(reader, GeoResult.class);
                         listener.itemsRetrieved(response);
@@ -148,16 +171,12 @@ public class LocifyClient {
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        try {
-                            String httpBody = new String(responseBody, "UTF-8");
-                        } catch (UnsupportedEncodingException uee) {
-                            Log.e(TAG, "Unsupported encoding");
-                        }
-
                         InputStream contentStream = new ByteArrayInputStream(responseBody);
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, dateSerializer)
+                                .registerTypeAdapter(Date.class, dateDeserializer).create();
                         Reader reader = new InputStreamReader(contentStream);
-                        List<LogItem> response = gson.fromJson(reader, List.class);
+                        Type listType = new TypeToken<ArrayList<LogItem>>(){}.getType();
+                        List<LogItem> response = gson.fromJson(reader, listType);
                         listener.itemLogsRetrieved(response);
                     }
 

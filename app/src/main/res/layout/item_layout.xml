@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -8,38 +9,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/item_title"
-        android:layout_alignParentTop="true"
         android:textSize="24sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/item_distance"
-        android:layout_below="@+id/item_title"/>
+        android:id="@+id/item_distance"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/item_user"
-        android:layout_below="@+id/item_distance"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
+        android:id="@+id/item_user"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_difficulty"
-        android:layout_above="@+id/difficultyRating"
-        android:text="@string/item_difficulty"
-        android:layout_alignParentRight="true"/>
-
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/difficultyRating"
-        style="?android:attr/ratingBarStyleSmall"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:numStars="5"
-        android:stepSize="0.1"/>
-</RelativeLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_difficulty"
+                android:text="@string/item_difficulty"/>
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/difficultyRating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:numStars="5"
+                android:stepSize="0.1"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

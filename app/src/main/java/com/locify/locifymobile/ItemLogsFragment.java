@@ -16,10 +16,13 @@ import android.widget.TextView;
 import com.locify.locifymobile.com.locify.locifymobile.model.GeoItem;
 import com.locify.locifymobile.com.locify.locifymobile.model.GeoItemDetails;
 
+import java.text.SimpleDateFormat;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ItemLogsFragment extends ItemDetailsFragment {
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private static final String TAG = "ItemLogsFragment";
     RecyclerView recyclerView;
     TextView itemTitle;
@@ -77,8 +80,8 @@ public class ItemLogsFragment extends ItemDetailsFragment {
 
         itemDescription.setText(Html.fromHtml(item.data.getDescription()));
 
-        itemDateHidden.setText(Html.fromHtml(res.getString(R.string.date_hidden, item.data.dateHidden)));
-        itemLastFound.setText(Html.fromHtml(res.getString(R.string.last_found, item.data.lastModified)));
+        itemDateHidden.setText(Html.fromHtml(res.getString(R.string.date_hidden, dateFormatter.format(item.data.dateHidden))));
+        itemLastFound.setText(Html.fromHtml(res.getString(R.string.last_found, dateFormatter.format(item.data.lastModified))));
 
     }
 

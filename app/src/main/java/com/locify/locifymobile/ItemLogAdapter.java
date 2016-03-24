@@ -11,11 +11,14 @@ import android.widget.TextView;
 import com.locify.locifymobile.com.locify.locifymobile.model.GeoItemDetails;
 import com.locify.locifymobile.com.locify.locifymobile.model.LogItem;
 
+import java.text.SimpleDateFormat;
+
 
 /**
  * Created by vitaliy on 24.03.2016.
  */
 public class ItemLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private static final String TAG = "ItemLogAdapter";
     private final int VIEW_ITEM_LOG = 1;
     private GeoItemDetails itemDetails;
@@ -42,7 +45,7 @@ public class ItemLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             LogItem item = itemDetails.logs.get(i);
             viewHolder.setItem(item);
-            viewHolder.itemDate.setText(item.data.date.toString());
+            viewHolder.itemDate.setText(dateFormatter.format(item.data.date));
 
             Resources res = viewHolder.itemView.getResources();
             viewHolder.itemUser.setText(Html.fromHtml(res.getString(R.string.log_user, item.data.user.username)));

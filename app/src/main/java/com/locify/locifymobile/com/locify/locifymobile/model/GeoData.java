@@ -17,14 +17,14 @@ public class GeoData {
     public String status;
     public String url;
     public int founds;
-    @SerializedName("notfounds")
+//    @SerializedName("notfounds")
     public int notFounds;
     public double difficulty;
-    @SerializedName("last_modified")
+//    @SerializedName("last_modified")
     public Date lastModified;
-    @SerializedName("date_created")
+//    @SerializedName("date_created")
     public Date dateCreated;
-    @SerializedName("date_hidden")
+//    @SerializedName("date_hidden")
     public Date dateHidden;
     public ItemOwner owner;
     public Map<String, String> descriptions;
