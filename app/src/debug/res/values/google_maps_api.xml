@@ -1,0 +1,19 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=71:6F:EC:99:5D:87:73:E1:7F:4F:E9:09:FB:66:57:55:83:4F:AB:D8%3Bcom.locify.locifymobile
+
+    You can also add your credentials to an existing key, using this line:
+    71:6F:EC:99:5D:87:73:E1:7F:4F:E9:09:FB:66:57:55:83:4F:AB:D8;com.ebookfrenzy.mapdemo
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCI7Ymp049Edkg6iUkTd2PeUMo006JXpSY</string>
+</resources>

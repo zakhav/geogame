@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:columnCount="3"
+    android:rowCount="4">
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:id="@+id/geoCachingBtn"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:src="@drawable/geo_caching"
+        android:background="@null"
+        android:layout_gravity="center_horizontal"
+        android:onClick="geoCachingMenuSelected" />
+
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:id="@+id/localSearchBtn"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:src="@drawable/local_search" />
+
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:id="@+id/wayPointsBtn"
+        android:layout_row="0"
+        android:layout_column="2"
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:src="@drawable/way_points" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/geo_caching_menu"
+        android:id="@+id/geo_caching_menu_title"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/local_search_menu"
+        android:id="@+id/local_search_menu_title"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/way_points_menu"
+        android:id="@+id/way_points_menu_title"
+        android:layout_row="1"
+        android:layout_column="2"
+        android:layout_gravity="center_horizontal" />
+
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:id="@+id/settingsBtn"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:src="@drawable/settings"
+        android:background="@null"
+        android:layout_gravity="center_horizontal"
+        android:onClick="settingsMenuSelected" />
+
+    <ImageButton
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:id="@+id/exitBtn"
+        android:layout_row="2"
+        android:layout_column="1"
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:src="@drawable/application_exit"
+        android:onClick="exitMenuSelected" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/settings_menu"
+        android:id="@+id/settings_menu_title"
+        android:layout_row="3"
+        android:layout_column="0"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/exit_menu"
+        android:id="@+id/exit_menu_title"
+        android:layout_row="3"
+        android:layout_column="1"
+        android:layout_gravity="center_horizontal" />
+</GridLayout>

@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">LocifyMobile</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="login_btn">Login</string>
+    <string name="signIn_link">No account yet? Create one</string>
+    <string name="forgot_password_link">Forgot your password?</string>
+    <string name="create_account">Create Account</string>
+    <string name="login_link">Already a member? Login</string>
+    <string name="LoginFailedMsg">Login failed</string>
+    <string name="signup_name">Name</string>
+    <string name="SignupFailedMsg">Signup failed</string>
+    <string name="send_reset_password">Send reset instructions</string>
+    <string name="reset_password_instructions">Instructions on how to reset your password have been sent to %1$s</string>
+    <string name="signup_account_created">Account created successfully for user %1$s</string>
+    <string name="password_length_error">Password minimum length is %1$d</string>
+
+    <string name="invalid_email">Enter a valid email address</string>
+    <string name="empty_name">Name is empty</string>
+    <string name="empty_password">Password is empty</string>
+    <string name="empty_confirm_password">Confirm password is empty</string>
+    <string name="passwords_dont_match">Passwords do not match</string>
+    <string name="invalid_radius">Invalid radius</string>
+    <string name="invalid_zip">Invalid ZIP</string>
+    <string name="invalid_city">Invalid city name</string>
+
+    <string name="geo_caching_menu">GeoCaching</string>
+    <string name="local_search_menu">Local search</string>
+    <string name="way_points_menu">Waypoints</string>
+    <string name="settings_menu">Settings</string>
+    <string name="exit_menu">Exit</string>
+
+    <string name="item_distance"><![CDATA[<b>Distance:</b> %1$.2f km]]></string>
+    <string name="item_owner"><![CDATA[<b>User name:</b> %1$s]]></string>
+    <string name="item_difficulty">Difficulty:</string>
+    <string name="log_user"><![CDATA[<b>User name:</b> %1$s]]></string>
+    <string name="log_comment"><![CDATA[<b>Comment:</b> %1$s]]></string>
+    <string name="label_logs">Logs</string>
+
+    <string name="last_found"><![CDATA[<b>Last found:</b> %1$s]]></string>
+    <string name="date_hidden"><![CDATA[<b>Date Hidden:</b> %1$s]]></string>
+    <string name="found_it">Found it!!!</string>
+    <string name="label_description">Description</string>
+
+    <string name="search_title">Search Options</string>
+    <string name="search_radius">Radius:</string>
+    <string name="search_current_location">Current Location</string>
+    <string name="search_zip">ZIP Code</string>
+    <string name="search_city">City</string>
+    <string name="search_btn">Search</string>
+</resources>
