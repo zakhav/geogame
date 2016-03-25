@@ -3,6 +3,7 @@ package com.locify.locifymobile;
 import android.Manifest;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -14,9 +15,13 @@ import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchCriteria;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchResultBuffer;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchType;
+
+import java.util.Date;
 
 
 public class GeoCachingActivity extends FragmentActivity
@@ -41,9 +46,13 @@ public class GeoCachingActivity extends FragmentActivity
 
     private SearchResultBuffer searchBuffer;
 
+    public GeoCachingActivity() {
+        searchBuffer = new SearchResultBuffer();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        searchBuffer = new SearchResultBuffer();
+        Log.i(TAG, "onCreate: " + this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_caching);
 
@@ -167,5 +176,21 @@ public class GeoCachingActivity extends FragmentActivity
                 mapFragment.resetSearch();
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Gson gson = new GsonBuilder().create();
+        outState.putString("search_buffer", gson.toJson(searchBuffer));
+        Log.i(TAG, "onSaveInstanceState: " + outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Gson gson = new GsonBuilder().create();
+        searchBuffer = gson.fromJson(savedInstanceState.getString("search_buffer"), SearchResultBuffer.class);
+        Log.i(TAG, "onRestoreInstanceState: " + savedInstanceState);
     }
 }

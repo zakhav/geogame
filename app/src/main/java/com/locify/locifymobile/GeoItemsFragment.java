@@ -37,6 +37,7 @@ public class GeoItemsFragment extends PageFragment implements RetriveItemsListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.v(TAG, "GeoItemsFragment onCreateView: " + this);
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_geo_items, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.geo_items_view);
@@ -66,14 +67,6 @@ public class GeoItemsFragment extends PageFragment implements RetriveItemsListen
         });
         recyclerView.setAdapter(adapter);
         return rootView;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        GeoCachingActivity geoCachingActivity = (GeoCachingActivity)getActivity();
-        searchBuffer = geoCachingActivity.getSearchBuffer();
-        refreshItemList();
     }
 
     public void refreshItemList() {

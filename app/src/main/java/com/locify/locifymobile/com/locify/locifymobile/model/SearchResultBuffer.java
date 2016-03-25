@@ -27,6 +27,10 @@ public class SearchResultBuffer {
         return items;
     }
 
+    public void setItems(List<GeoItem> items) {
+        this.items = items;
+    }
+
     public android.location.Location getCenter() {
         return center;
     }
