@@ -1,17 +1,21 @@
 package com.locify.locifymobile;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
     Button loginButton;
     TextView signupLink;
     TextView forgotPasswordLink;
+    View authProgressView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,12 +79,11 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         }
 
         loginButton.setEnabled(false);
-
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
-        CookieStore cs = new PersistentCookieStore(this);
-        cs.clear();
+        addLoginProgress();
+
         LocifyClient client = LocifyClient.getInstance();
         client.login(this, this, email, password);
     }
@@ -134,6 +138,24 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         return valid;
     }
 
+    private void addLoginProgress() {
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        authProgressView = vi.inflate(R.layout.auth_progress_item, null);
+
+        ViewGroup loginLay = (ViewGroup) emailText.getParent();
+        loginLay.addView(authProgressView, 4,
+                new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void removeLoginProgress() {
+        if(authProgressView != null) {
+            ViewGroup loginLay = (ViewGroup) emailText.getParent();
+            loginLay.removeView(authProgressView);
+        }
+    }
+
     @Override
     public void loginSucceded() {
         Log.i(TAG, "Login succeded!!!");
@@ -146,6 +168,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
     @Override
     public void loginFailed(int statusCode) {
         Log.e(TAG, "Login failed: " + statusCode);
+        removeLoginProgress();
         Toast.makeText(getBaseContext(), R.string.LoginFailedMsg, Toast.LENGTH_LONG).show();
         loginButton.setEnabled(true);
     }

@@ -4,6 +4,7 @@
     <string name="login_password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="login_btn">Login</string>
+    <string name="auth_label">Authenticating...</string>
     <string name="signIn_link">No account yet? Create one</string>
     <string name="forgot_password_link">Forgot your password?</string>
     <string name="create_account">Create Account</string>

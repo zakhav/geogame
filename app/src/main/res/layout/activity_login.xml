@@ -25,6 +25,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:inputType="textEmailAddress"
+            android:padding="4dp"
+            android:background="@drawable/edit_text_style"
             android:hint="@string/login_email" />
         <!-- Password Label -->
         <EditText android:id="@+id/input_password"
@@ -33,6 +35,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:inputType="textPassword"
+            android:padding="4dp"
+            android:background="@drawable/edit_text_style"
             android:hint="@string/login_password"/>
 
         <android.support.v7.widget.AppCompatButton

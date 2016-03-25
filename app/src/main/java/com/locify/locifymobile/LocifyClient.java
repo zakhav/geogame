@@ -21,6 +21,7 @@ import com.locify.locifymobile.com.locify.locifymobile.model.LogItem;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchResultBuffer;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,6 +89,11 @@ public class LocifyClient {
     }
 
     public void login(Context context, final LoginListener loginListener, String userMail, String password) {
+        client = new AsyncHttpClient();
+//        PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
+//        myCookieStore.clear();
+//        client.setCookieStore(myCookieStore);
+
         List<NameValuePair> formData = new ArrayList<NameValuePair>();
         formData.add(new BasicNameValuePair("email", userMail));
         formData.add(new BasicNameValuePair("password", password));
@@ -95,25 +101,16 @@ public class LocifyClient {
         try {
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formData);
 
-            final ProgressDialog prgDialog = new ProgressDialog(context, R.style.AppTheme);
-            prgDialog.setIndeterminate(true);
-            prgDialog.setMessage("Authenticating...");
-            prgDialog.show();
-
 //            setCredentials(client, getAbsoluteUrl("/login"), userMail, password);
 
             client.post(context, getAbsoluteUrl("/login"), entity, CONTENT_TYPE_FORM_URL_ENCODED, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    // Hide Progress Dialog
-                    prgDialog.hide();
                     loginListener.loginSucceded();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    // Hide Progress Dialog
-                    prgDialog.hide();
                     Log.d(TAG, "Login failed. HTTP error: " + statusCode);
                     loginListener.loginFailed(statusCode);
                 }
