@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         loginButton = (Button)findViewById(R.id.btn_login);
         signupLink = (TextView)findViewById(R.id.link_signup);
         forgotPasswordLink = (TextView)findViewById(R.id.link_forgot_password);
+        authProgressView = findViewById(R.id.auth_progress);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,21 +140,11 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
     }
 
     private void addLoginProgress() {
-        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        authProgressView = vi.inflate(R.layout.auth_progress_item, null);
-
-        ViewGroup loginLay = (ViewGroup) emailText.getParent();
-        loginLay.addView(authProgressView, 4,
-                new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
+        authProgressView.setVisibility(View.VISIBLE);
     }
 
     private void removeLoginProgress() {
-        if(authProgressView != null) {
-            ViewGroup loginLay = (ViewGroup) emailText.getParent();
-            loginLay.removeView(authProgressView);
-        }
+        authProgressView.setVisibility(View.GONE);
     }
 
     @Override

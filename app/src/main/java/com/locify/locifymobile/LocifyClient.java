@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpStatus;
 import cz.msebera.android.httpclient.NameValuePair;
 import cz.msebera.android.httpclient.auth.AuthScope;
 import cz.msebera.android.httpclient.auth.UsernamePasswordCredentials;
@@ -50,7 +51,7 @@ import cz.msebera.android.httpclient.message.BasicNameValuePair;
 public class LocifyClient {
     private static final String TAG = "LocifyClient";
 //    private static final String DATE_FORMAT = "yyyy-mm-dd'T'hh:mm:ss";
-    public static final String LOCIFY_SERVER_BASE_URL = "http://10.0.2.2:9000";
+    public static final String LOCIFY_SERVER_BASE_URL = "http://192.168.1.2:9000";
     public static final String CONTENT_TYPE_FORM_URL_ENCODED = "application/x-www-form-urlencoded";
     public static final String CONTENT_TYPE_JSON = "application/json";
     private AsyncHttpClient client;
@@ -106,7 +107,20 @@ public class LocifyClient {
             client.post(context, getAbsoluteUrl("/login"), entity, CONTENT_TYPE_FORM_URL_ENCODED, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    loginListener.loginSucceded();
+                    String response = new String(responseBody);
+                    // check if we have not been redirected to login page
+                    boolean redirectToLogin = false;
+                    for(Header header: headers) {
+                        if(header.getName().equals("Set-Cookie")) {
+                            redirectToLogin = true;
+                            break;
+                        }
+                    }
+                    if(!redirectToLogin) {
+                        loginListener.loginSucceded();
+                    } else {
+                        loginListener.loginFailed(401);
+                    }
                 }
 
                 @Override
