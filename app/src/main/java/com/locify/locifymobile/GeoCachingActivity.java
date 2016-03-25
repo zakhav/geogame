@@ -43,6 +43,7 @@ public class GeoCachingActivity extends FragmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        searchBuffer = new SearchResultBuffer();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_caching);
 
@@ -51,8 +52,6 @@ public class GeoCachingActivity extends FragmentActivity
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-
-        searchBuffer = new SearchResultBuffer();
 
 //        requestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
 //                LOCATION_REQUEST_CODE);

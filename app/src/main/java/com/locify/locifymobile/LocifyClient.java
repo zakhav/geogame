@@ -1,9 +1,7 @@
 package com.locify.locifymobile;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Location;
-import android.net.Uri;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -21,8 +19,13 @@ import com.locify.locifymobile.com.locify.locifymobile.model.LogItem;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchResultBuffer;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,22 +39,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpStatus;
-import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.auth.AuthScope;
-import cz.msebera.android.httpclient.auth.UsernamePasswordCredentials;
-import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.message.BasicNameValuePair;
-
 /**
  * Created by vitaliy on 15.03.2016.
  */
 public class LocifyClient {
     private static final String TAG = "LocifyClient";
-//    private static final String DATE_FORMAT = "yyyy-mm-dd'T'hh:mm:ss";
-    public static final String LOCIFY_SERVER_BASE_URL = "http://192.168.1.2:9000";
+    public static final String LOCIFY_SERVER_BASE_URL = "http://192.168.1.3:9000";
     public static final String CONTENT_TYPE_FORM_URL_ENCODED = "application/x-www-form-urlencoded";
     public static final String CONTENT_TYPE_JSON = "application/json";
     private AsyncHttpClient client;
@@ -82,7 +75,7 @@ public class LocifyClient {
     }
 
     private LocifyClient() {
-        client = new AsyncHttpClient();
+//        client = new AsyncHttpClient();
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
@@ -91,16 +84,13 @@ public class LocifyClient {
 
     public void login(Context context, final LoginListener loginListener, String userMail, String password) {
         client = new AsyncHttpClient();
-//        PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
-//        myCookieStore.clear();
-//        client.setCookieStore(myCookieStore);
 
         List<NameValuePair> formData = new ArrayList<NameValuePair>();
         formData.add(new BasicNameValuePair("email", userMail));
         formData.add(new BasicNameValuePair("password", password));
 
         try {
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formData);
+            HttpEntity entity = new UrlEncodedFormEntity(formData);
 
 //            setCredentials(client, getAbsoluteUrl("/login"), userMail, password);
 
@@ -146,15 +136,6 @@ public class LocifyClient {
                 Log.e(TAG, "Logout failed. HTTP error: " + statusCode);
             }
         });
-    }
-
-    private void setCredentials(AsyncHttpClient client, String URL, String userMail, String password) {
-        Uri parsed = Uri.parse(URL);
-        client.clearCredentialsProvider();
-        client.setCredentials(
-                new AuthScope(parsed.getHost(), parsed.getPort() == -1 ? 80 : parsed.getPort()),
-                new UsernamePasswordCredentials(userMail, password)
-        );
     }
 
     public void retrieveItemList(Context context, final RetriveItemsListener listener, SearchResultBuffer searchBuffer) {
@@ -227,7 +208,7 @@ public class LocifyClient {
             List<NameValuePair> formData = new ArrayList<NameValuePair>();
             formData.add(new BasicNameValuePair("email", email));
 
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formData);
+            HttpEntity entity = new UrlEncodedFormEntity(formData);
             client.post(context, getAbsoluteUrl("/login/password/forgot"), entity, CONTENT_TYPE_FORM_URL_ENCODED,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -254,7 +235,7 @@ public class LocifyClient {
             formData.add(new BasicNameValuePair("password", password));
             formData.add(new BasicNameValuePair("repeatPassword", password));
 
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formData);
+            HttpEntity entity = new UrlEncodedFormEntity(formData);
             client.post(context, getAbsoluteUrl("/signup"), entity, CONTENT_TYPE_FORM_URL_ENCODED,
                 new AsyncHttpResponseHandler() {
                     @Override

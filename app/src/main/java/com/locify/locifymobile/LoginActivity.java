@@ -19,9 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.PersistentCookieStore;
-
-import cz.msebera.android.httpclient.client.CookieStore;
 
 public class LoginActivity extends AppCompatActivity implements LoginListener {
     private static final String TAG = "LoginActivity";

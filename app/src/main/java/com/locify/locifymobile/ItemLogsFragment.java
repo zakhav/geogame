@@ -82,15 +82,5 @@ public class ItemLogsFragment extends ItemDetailsFragment {
 
         itemDateHidden.setText(Html.fromHtml(res.getString(R.string.date_hidden, dateFormatter.format(item.data.dateHidden))));
         itemLastFound.setText(Html.fromHtml(res.getString(R.string.last_found, dateFormatter.format(item.data.lastModified))));
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        refreshLogsList();
-    }
-
-    public void refreshLogsList() {
     }
 }

@@ -93,14 +93,18 @@ public class GeoItemsFragment extends PageFragment implements RetriveItemsListen
         }
         searchBuffer.setCenter(result.searchCenter.getPoint());
         searchBuffer.setTotal(result.totalCount);
-        adapter.setLoaded();
+        if(adapter != null) {
+            adapter.setLoaded();
+        }
     }
 
     @Override
     public void requestFailed(int statusCode) {
         Log.e(TAG, "Get Items failed with status code: " + statusCode);
         removeProgress();
-        adapter.setLoaded();
+        if(adapter != null) {
+            adapter.setLoaded();
+        }
     }
 
     private void removeProgress() {
