@@ -48,12 +48,12 @@ public class GeoSearchFragment extends PageFragment {
                 searchBtnClicked(v);
             }
         });
+
+        syncSearchControls();
         return rootView;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void syncSearchControls() {
         GeoCachingActivity geoCachingActivity = (GeoCachingActivity)getActivity();
         if(geoCachingActivity != null) {
             SearchCriteria searchCriteria = geoCachingActivity.getSearchBuffer().getCriteria();

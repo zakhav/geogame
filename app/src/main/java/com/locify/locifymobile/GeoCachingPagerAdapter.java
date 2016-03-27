@@ -15,28 +15,14 @@ public class GeoCachingPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         this.tabCount = numberOfTabs;
         itemFragments = new PageFragment[numberOfTabs];
+        itemFragments[0] = new GeoItemsFragment();
+        itemFragments[1] = new ItemsMapFragment();
+        itemFragments[2] = new GeoSearchFragment();
     }
 
     @Override
     public Fragment getItem(int position) {
-        PageFragment itemFragment = null;
-        switch (position) {
-            case 0:
-                itemFragment = new GeoItemsFragment();
-                break;
-            case 1:
-                itemFragment = new ItemsMapFragment();
-                break;
-            case 2:
-                itemFragment = new GeoSearchFragment();
-                break;
-            default:
-                break;
-        }
-        if(itemFragment != null) {
-            itemFragments[position] = itemFragment;
-        }
-        return itemFragment;
+        return itemFragments[position];
     }
 
     @Override
@@ -47,6 +33,5 @@ public class GeoCachingPagerAdapter extends FragmentPagerAdapter {
     public PageFragment getFragmentAt(int position) {
         return itemFragments[position];
     }
-
 }
 

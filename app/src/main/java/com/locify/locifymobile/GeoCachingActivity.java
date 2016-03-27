@@ -32,6 +32,8 @@ public class GeoCachingActivity extends FragmentActivity
     private static final String SEARCH_CITY_PROP = "search_city";
     private static final String SEARCH_ZIP_PROP = "search_zip";
 
+    private static final String SEARCH_EXTRA = "search_buffer";
+
     private static final int ITEMS_TAB_INDEX = 0;
     private static final int MAP_TAB_INDEX = 1;
     private static final int LOCATION_REQUEST_CODE = 101;
@@ -52,18 +54,19 @@ public class GeoCachingActivity extends FragmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate: " + this);
+        Log.i(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_caching);
+
+        if(savedInstanceState != null) {
+            restoreSearchFromBundle(savedInstanceState);
+        }
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
-
-//        requestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
-//                LOCATION_REQUEST_CODE);
 
         tabLayout = (TabLayout) findViewById(R.id.tab_geocaching);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.geo_items));
@@ -135,12 +138,26 @@ public class GeoCachingActivity extends FragmentActivity
     protected void onStart() {
         super.onStart();
         googleApiClient.connect();
+        Log.i(TAG, "OnStart");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         googleApiClient.disconnect();
+        Log.i(TAG, "OnStop");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "OnRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "OnResume");
     }
 
     private void loadSearchCriteria(Bundle instanceState, SearchCriteria searchCriteria) {
@@ -181,16 +198,24 @@ public class GeoCachingActivity extends FragmentActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Gson gson = new GsonBuilder().create();
-        outState.putString("search_buffer", gson.toJson(searchBuffer));
+        persistSearchToBundle(outState);
         Log.i(TAG, "onSaveInstanceState: " + outState);
+    }
+
+    private void persistSearchToBundle(Bundle bundle) {
+        Gson gson = new GsonBuilder().create();
+        bundle.putString(SEARCH_EXTRA, gson.toJson(searchBuffer));
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Gson gson = new GsonBuilder().create();
-        searchBuffer = gson.fromJson(savedInstanceState.getString("search_buffer"), SearchResultBuffer.class);
+        restoreSearchFromBundle(savedInstanceState);
         Log.i(TAG, "onRestoreInstanceState: " + savedInstanceState);
+    }
+
+    private void restoreSearchFromBundle(Bundle bundle) {
+        Gson gson = new GsonBuilder().create();
+        searchBuffer = gson.fromJson(bundle.getString(SEARCH_EXTRA), SearchResultBuffer.class);
     }
 }
