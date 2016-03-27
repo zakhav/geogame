@@ -6,100 +6,98 @@
     android:layout_gravity="center"
     tools:context="com.locify.locifymobile.GeoSearchFragment">
 
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="4dp"
+        android:columnCount="2"
+        android:rowCount="6"
+        android:id="@+id/gridLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/search_title"
+            android:id="@+id/searchOptions"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnSpan="2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_radius"
+            android:id="@+id/raduisLabel"
+            android:layout_column="0"
+            android:layout_row="1" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_gravity="fill_horizontal"
+            android:id="@+id/radiusField"
+            android:padding="4dp"
+            android:background="@drawable/edit_text_style"
+            android:layout_column="1"
+            android:layout_row="1" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_rowSpan="3"
+            android:id="@+id/search_opt_group">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_current_location"
+                android:id="@+id/search_current_location_opt"
+                android:checked="false" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_zip"
+                android:id="@+id/search_zip_opt"
+                android:checked="false" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_city"
+                android:id="@+id/search_city_opt"
+                android:checked="false" />
+        </RadioGroup>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:inputType="number"
+            android:id="@+id/zip_edit"
+            android:padding="4dp"
+            android:background="@drawable/edit_text_style"
+            android:layout_row="3"
+            android:layout_column="1"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:id="@+id/city_edit"
+            android:padding="4dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/edit_text_style"
+            android:layout_row="4"
+            android:layout_column="1" />
+    </GridLayout>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search_btn"
-        android:id="@+id/search_btn"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_above="@+id/search_btn"
-            android:layout_margin="4dp"
-            android:columnCount="2"
-            android:rowCount="6"
-            android:id="@+id/gridLayout">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/search_title"
-                android:id="@+id/searchOptions"
-                android:layout_row="0"
-                android:layout_column="0"
-                android:layout_columnSpan="2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_radius"
-                android:id="@+id/raduisLabel"
-                android:layout_column="0"
-                android:layout_row="1" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:layout_gravity="fill_horizontal"
-                android:id="@+id/radiusField"
-                android:padding="4dp"
-                android:background="@drawable/edit_text_style"
-                android:layout_column="1"
-                android:layout_row="1" />
-
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_row="2"
-                android:layout_column="0"
-                android:layout_rowSpan="3"
-                android:id="@+id/search_opt_group">
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_current_location"
-                    android:id="@+id/search_current_location_opt"
-                    android:checked="false" />
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_zip"
-                    android:id="@+id/search_zip_opt"
-                    android:checked="false" />
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_city"
-                    android:id="@+id/search_city_opt"
-                    android:checked="false" />
-            </RadioGroup>
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:inputType="number"
-                android:id="@+id/zip_edit"
-                android:padding="4dp"
-                android:background="@drawable/edit_text_style"
-                android:layout_row="3"
-                android:layout_column="1"/>
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:id="@+id/city_edit"
-                android:padding="4dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/edit_text_style"
-                android:layout_row="4"
-                android:layout_column="1" />
-        </GridLayout>
+        android:layout_below="@+id/gridLayout"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/search_btn"/>
 </RelativeLayout>
