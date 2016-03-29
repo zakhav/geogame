@@ -90,11 +90,13 @@ public class ItemsMapFragment extends PageFragment implements OnMapReadyCallback
     private void syncMapItems() {
         itemsMap.clear();
         Location searchCenter = searchBuffer.getCenter();
-        Circle radiusCircle = itemsMap.addCircle(new CircleOptions()
-                .center(new LatLng(searchCenter.getLatitude(), searchCenter.getLongitude()))
-                .radius(searchBuffer.getCriteria().radius * 1000)
-                .strokeColor(getResources().getColor(R.color.searchCircleStroke))
-                .fillColor(getResources().getColor(R.color.searchCircleFill)));
+        if(searchCenter != null) {
+            Circle radiusCircle = itemsMap.addCircle(new CircleOptions()
+                    .center(new LatLng(searchCenter.getLatitude(), searchCenter.getLongitude()))
+                    .radius(searchBuffer.getCriteria().radius * 1000)
+                    .strokeColor(getResources().getColor(R.color.searchCircleStroke))
+                    .fillColor(getResources().getColor(R.color.searchCircleFill)));
+        }
         for(GeoItem item: searchBuffer.getItems()) {
             com.locify.locifymobile.com.locify.locifymobile.model.Location itemLocatipon = item.data.location;
             Marker marker = itemsMap.addMarker(new MarkerOptions()

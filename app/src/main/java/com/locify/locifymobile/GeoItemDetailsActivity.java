@@ -14,7 +14,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.locify.locifymobile.com.locify.locifymobile.model.GeoItemDetails;
+import com.locify.locifymobile.com.locify.locifymobile.model.SearchResultBuffer;
 
 
 public class GeoItemDetailsActivity extends FragmentActivity
@@ -22,6 +24,7 @@ public class GeoItemDetailsActivity extends FragmentActivity
     private static final String TAG = "GeoItemDetailsActivity";
     public static final String IDEM_DETAILS = "item.details";
     public static final String IDEM_DISTANCE = "item.distance";
+    private static final String IDEM_EXTRA = "item_buffer";
 
     private static final int LOGS_TAB_INDEX = 0;
     private static final int MAP_TAB_INDEX = 1;
@@ -32,6 +35,7 @@ public class GeoItemDetailsActivity extends FragmentActivity
     private static final long LOCATION_REFRESH_TIME = 5000L;
     private static final float LOCATION_REFRESH_DISTANCE = 10.0f;
     private GoogleApiClient googleApiClient;
+    private GeoItemDetails itemDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +56,14 @@ public class GeoItemDetailsActivity extends FragmentActivity
 
         String detailsJson = getIntent().getStringExtra(IDEM_DETAILS);
         float distance = getIntent().getFloatExtra(IDEM_DISTANCE, 0.0f);
-        GeoItemDetails itemDetails = null;
+        itemDetails = null;
+
         if(detailsJson != null) {
             Gson gson = new Gson();
             itemDetails = gson.fromJson(detailsJson, GeoItemDetails.class);
+        }
+        if(savedInstanceState != null) {
+            restoreItemFromBundle(savedInstanceState);
         }
 
         pagerAdapter = new ItemDetailsPagerAdapter(
@@ -120,5 +128,27 @@ public class GeoItemDetailsActivity extends FragmentActivity
     protected void onStop() {
         super.onStop();
         googleApiClient.disconnect();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        persistItemToBundle(outState);
+    }
+
+    private void persistItemToBundle(Bundle bundle) {
+        Gson gson = new GsonBuilder().create();
+        bundle.putString(IDEM_EXTRA, gson.toJson(itemDetails));
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        restoreItemFromBundle(savedInstanceState);
+    }
+
+    private void restoreItemFromBundle(Bundle bundle) {
+        Gson gson = new GsonBuilder().create();
+        itemDetails = gson.fromJson(bundle.getString(IDEM_EXTRA), GeoItemDetails.class);
     }
 }
