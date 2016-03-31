@@ -30,7 +30,6 @@ public class ItemsMapFragment extends PageFragment implements OnMapReadyCallback
     private GoogleMap itemsMap;
     private boolean deferMapReinit;
     private boolean mapCentered;
-    private SearchResultBuffer searchBuffer;
 
     public ItemsMapFragment() {
         // Required empty public constructor
@@ -39,8 +38,6 @@ public class ItemsMapFragment extends PageFragment implements OnMapReadyCallback
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        GeoCachingActivity geoCachingActivity = (GeoCachingActivity)getActivity();
-        searchBuffer = geoCachingActivity.getSearchBuffer();
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_items_map, container, false);
         return rootView;
@@ -76,7 +73,7 @@ public class ItemsMapFragment extends PageFragment implements OnMapReadyCallback
     }
 
     private void centerMap() {
-        Location searchCenter = searchBuffer.getCenter();
+        Location searchCenter = searchResult.getCenter();
         if(searchCenter != null) {
             CameraUpdate center = CameraUpdateFactory.newLatLngZoom(
                     new LatLng(searchCenter.getLatitude(), searchCenter.getLongitude()),
@@ -88,15 +85,15 @@ public class ItemsMapFragment extends PageFragment implements OnMapReadyCallback
 
     private void syncMapItems() {
         itemsMap.clear();
-        Location searchCenter = searchBuffer.getCenter();
+        Location searchCenter = searchResult.getCenter();
         if(searchCenter != null) {
             Circle radiusCircle = itemsMap.addCircle(new CircleOptions()
                     .center(new LatLng(searchCenter.getLatitude(), searchCenter.getLongitude()))
-                    .radius(searchBuffer.getCriteria().radius * 1000)
+                    .radius(searchResult.getCriteria().radius * 1000)
                     .strokeColor(getResources().getColor(R.color.searchCircleStroke))
                     .fillColor(getResources().getColor(R.color.searchCircleFill)));
         }
-        for(GeoItem item: searchBuffer.getItems()) {
+        for(GeoItem item: searchResult.getItems()) {
             com.locify.locifymobile.com.locify.locifymobile.model.Location itemLocatipon = item.data.location;
             Marker marker = itemsMap.addMarker(new MarkerOptions()
                     .position(new LatLng(itemLocatipon.latitude, itemLocatipon.longitude))

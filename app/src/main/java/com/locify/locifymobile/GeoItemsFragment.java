@@ -26,7 +26,6 @@ public class GeoItemsFragment extends PageFragment implements RetriveItemsListen
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     GeoItemAdapter adapter;
-    SearchResultBuffer searchBuffer;
     protected Handler handler;
     private boolean showProgress;
 
@@ -42,27 +41,24 @@ public class GeoItemsFragment extends PageFragment implements RetriveItemsListen
         View rootView = inflater.inflate(R.layout.fragment_geo_items, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.geo_items_view);
 
-        GeoCachingActivity geoCachingActivity = (GeoCachingActivity)getActivity();
-        searchBuffer = geoCachingActivity.getSearchBuffer();
-
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new GeoItemAdapter(getActivity(), searchBuffer, recyclerView);
+        adapter = new GeoItemAdapter(getActivity(), searchResult, recyclerView);
         adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void loadMore() {
                 //add null, so the adapter will check view_type and show progress bar at bottom
-                List<GeoItem> items = searchBuffer.getItems();
+                List<GeoItem> items = searchResult.getItems();
                 items.add(null);
                 showProgress = true;
                 adapter.notifyItemInserted(items.size() - 1);
                 LocifyClient client = LocifyClient.getInstance();
-                client.retrieveItemList(getActivity(), GeoItemsFragment.this, searchBuffer);
+                client.retrieveItemList(getActivity(), GeoItemsFragment.this, searchResult);
             }
 
             @Override
             public boolean hasMore() {
-                return !searchBuffer.isFull();
+                return !searchResult.isFull();
             }
         });
         recyclerView.setAdapter(adapter);
@@ -70,22 +66,22 @@ public class GeoItemsFragment extends PageFragment implements RetriveItemsListen
     }
 
     public void refreshItemList() {
-        searchBuffer.resetResult();
+        searchResult.resetResult();
         LocifyClient client = LocifyClient.getInstance();
-        client.retrieveItemList(getActivity(), this, searchBuffer);
+        client.retrieveItemList(getActivity(), this, searchResult);
     }
 
     @Override
     public void itemsRetrieved(GeoResult result) {
         Log.v(TAG, "Get Items succeeded ");
-        List<GeoItem> items = searchBuffer.getItems();
+        List<GeoItem> items = searchResult.getItems();
         removeProgress();
         for (GeoItem row: result.rows) {
             items.add(row);
             adapter.notifyItemInserted(items.size());
         }
-        searchBuffer.setCenter(result.searchCenter.getPoint());
-        searchBuffer.setTotal(result.totalCount);
+        searchResult.setCenter(result.searchCenter.getPoint());
+        searchResult.setTotal(result.totalCount);
         if(adapter != null) {
             adapter.setLoaded();
         }
@@ -102,7 +98,7 @@ public class GeoItemsFragment extends PageFragment implements RetriveItemsListen
 
     private void removeProgress() {
         if(showProgress) {
-            List<GeoItem> items = searchBuffer.getItems();
+            List<GeoItem> items = searchResult.getItems();
             items.remove(items.size() - 1);
             adapter.notifyItemRemoved(items.size());
             showProgress = false;

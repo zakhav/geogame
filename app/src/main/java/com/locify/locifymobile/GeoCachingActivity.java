@@ -22,7 +22,9 @@ import com.locify.locifymobile.com.locify.locifymobile.model.SearchCriteria;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchResultBuffer;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchType;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class GeoCachingActivity extends FragmentActivity
@@ -50,6 +52,14 @@ public class GeoCachingActivity extends FragmentActivity
 
     private SearchResultBuffer searchBuffer;
 
+    private static final String STORE_FRAGMENT_ITEMS = "fragment.items";
+    private static final String STORE_FRAGMENT_MAP = "fragment.map";
+    private static final String STORE_FRAGMENT_SEARCH = "fragment.search";
+
+    private GeoItemsFragment itemsFragment;
+    private ItemsMapFragment mapFragment;
+    private GeoSearchFragment searchFragment;
+
     public GeoCachingActivity() {
         searchBuffer = new SearchResultBuffer();
     }
@@ -60,9 +70,26 @@ public class GeoCachingActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geo_caching);
 
+        List<PageFragment> pageFragments = new ArrayList<PageFragment>();
+
+        FragmentManager fm = getSupportFragmentManager();
         if(savedInstanceState != null) {
             restoreSearchFromBundle(savedInstanceState);
+
+            String itemsFragmentTag = savedInstanceState.getString(STORE_FRAGMENT_ITEMS);
+            itemsFragment = (GeoItemsFragment) fm.findFragmentByTag(itemsFragmentTag);
+            String mapFragmentTag = savedInstanceState.getString(STORE_FRAGMENT_MAP);
+            mapFragment = (ItemsMapFragment) fm.findFragmentByTag(mapFragmentTag);
+            String searchFragmentTag = savedInstanceState.getString(STORE_FRAGMENT_SEARCH);
+            searchFragment = (GeoSearchFragment) fm.findFragmentByTag(searchFragmentTag);
+        } else {
+            itemsFragment = new GeoItemsFragment();
+            mapFragment = new ItemsMapFragment();
+            searchFragment = new GeoSearchFragment();
         }
+        pageFragments.add(itemsFragment);
+        pageFragments.add(mapFragment);
+        pageFragments.add(searchFragment);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -78,16 +105,14 @@ public class GeoCachingActivity extends FragmentActivity
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new GeoCachingPagerAdapter(
-                getSupportFragmentManager(), tabLayout.getTabCount(), searchBuffer);
+                fm, pageFragments, searchBuffer);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                Fragment pageFragment = pagerAdapter.getCurrentFragment();
                 if(tab.getPosition() == MAP_TAB_INDEX) {
-                    ItemsMapFragment mapFragment = (ItemsMapFragment)pageFragment;
                     mapFragment.pageActivated();
                 }
             }
@@ -184,18 +209,27 @@ public class GeoCachingActivity extends FragmentActivity
         TabLayout.Tab itemsTab = tabLayout.getTabAt(ITEMS_TAB_INDEX);
         if(itemsTab != null) {
             itemsTab.select();
-            GeoItemsFragment itemsFragment = (GeoItemsFragment)pagerAdapter.getCurrentFragment();
             itemsFragment.refreshItemList();
         }
-//            if(mapFragment != null) {
-//                mapFragment.resetSearch();
-//            }
+        if(mapFragment != null) {
+            mapFragment.resetSearch();
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         persistSearchToBundle(outState);
+
+        if (itemsFragment != null) {
+            outState.putString(STORE_FRAGMENT_ITEMS, itemsFragment.getTag());
+        }
+        if (mapFragment != null) {
+            outState.putString(STORE_FRAGMENT_MAP, mapFragment.getTag());
+        }
+        if (searchFragment != null) {
+            outState.putString(STORE_FRAGMENT_SEARCH, searchFragment.getTag());
+        }
         Log.i(TAG, "onSaveInstanceState: " + outState);
     }
 
