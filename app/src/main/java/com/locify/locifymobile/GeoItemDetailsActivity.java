@@ -6,6 +6,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -17,6 +18,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.locify.locifymobile.com.locify.locifymobile.model.GeoItemDetails;
 import com.locify.locifymobile.com.locify.locifymobile.model.SearchResultBuffer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GeoItemDetailsActivity extends FragmentActivity
@@ -35,12 +39,34 @@ public class GeoItemDetailsActivity extends FragmentActivity
     private static final long LOCATION_REFRESH_TIME = 5000L;
     private static final float LOCATION_REFRESH_DISTANCE = 10.0f;
     private GoogleApiClient googleApiClient;
+
+    private static final String STORE_FRAGMENT_LOGS = "fragment.logs";
+    private static final String STORE_FRAGMENT_MAP = "fragment.detailsMap";
+
     private GeoItemDetails itemDetails;
+    private ItemLogsFragment logsFragment;
+    private ItemDetailsMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
+
+        List<ItemDetailsFragment> pageFragments = new ArrayList<ItemDetailsFragment>();
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        if(savedInstanceState != null) {
+            String logsFragmentTag = savedInstanceState.getString(STORE_FRAGMENT_LOGS);
+            logsFragment = (ItemLogsFragment) fm.findFragmentByTag(logsFragmentTag);
+            String mapFragmentTag = savedInstanceState.getString(STORE_FRAGMENT_MAP);
+            mapFragment = (ItemDetailsMapFragment) fm.findFragmentByTag(mapFragmentTag);
+        } else {
+            logsFragment = new ItemLogsFragment();
+            mapFragment = new ItemDetailsMapFragment();
+        }
+        pageFragments.add(logsFragment);
+        pageFragments.add(mapFragment);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -67,7 +93,7 @@ public class GeoItemDetailsActivity extends FragmentActivity
         }
 
         pagerAdapter = new ItemDetailsPagerAdapter(
-                getSupportFragmentManager(), tabLayout.getTabCount(), itemDetails);
+                getSupportFragmentManager(), pageFragments, itemDetails);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -134,6 +160,14 @@ public class GeoItemDetailsActivity extends FragmentActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         persistItemToBundle(outState);
+
+        if (logsFragment != null) {
+            outState.putString(STORE_FRAGMENT_LOGS, logsFragment.getTag());
+        }
+        if (mapFragment != null) {
+            outState.putString(STORE_FRAGMENT_MAP, mapFragment.getTag());
+        }
+
     }
 
     private void persistItemToBundle(Bundle bundle) {

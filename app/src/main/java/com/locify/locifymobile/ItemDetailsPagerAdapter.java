@@ -6,39 +6,32 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.locify.locifymobile.com.locify.locifymobile.model.GeoItemDetails;
 
+import java.util.List;
+
 /**
  * Created by vitaliy on 14.03.2016.
  */
 public class ItemDetailsPagerAdapter extends FragmentPagerAdapter {
-    int tabCount;
+    List<ItemDetailsFragment> detailsFragments;
     GeoItemDetails itemDetails;
 
-    public ItemDetailsPagerAdapter(FragmentManager fm, int numberOfTabs, GeoItemDetails itemDetails) {
+    public ItemDetailsPagerAdapter(FragmentManager fm, List<ItemDetailsFragment> detailsFragments, GeoItemDetails itemDetails) {
         super(fm);
-        this.tabCount = numberOfTabs;
+        this.detailsFragments = detailsFragments;
         this.itemDetails = itemDetails;
+        for(ItemDetailsFragment fragment: detailsFragments) {
+            fragment.setItemDetails(itemDetails);
+        }
     }
 
     @Override
     public Fragment getItem(int position) {
-        ItemDetailsFragment itemFragment = null;
-        switch (position) {
-            case 0:
-                itemFragment = new ItemLogsFragment();
-                break;
-            case 1:
-                itemFragment = new ItemDetailsMapFragment();
-                break;
-            default:
-                break;
-        }
-        itemFragment.setItemDetails(itemDetails);
-        return itemFragment;
+        return detailsFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return tabCount;
+        return detailsFragments.size();
     }
 }
 
