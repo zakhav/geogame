@@ -54,15 +54,12 @@ public class GeoSearchFragment extends PageFragment {
     }
 
     public void syncSearchControls() {
-        GeoCachingActivity geoCachingActivity = (GeoCachingActivity)getActivity();
-        if(geoCachingActivity != null) {
-            SearchCriteria searchCriteria = geoCachingActivity.getSearchBuffer().getCriteria();
-            if(searchCriteria != null) {
-                syncRadioButtons(searchCriteria);
-                radiusField.setText(Integer.toString(searchCriteria.radius));
-                zipField.setText(searchCriteria.zip);
-                cityField.setText(searchCriteria.city);
-            }
+        SearchCriteria searchCriteria = getSearchResult().getCriteria();
+        if(searchCriteria != null) {
+            syncRadioButtons(searchCriteria);
+            radiusField.setText(Integer.toString(searchCriteria.radius));
+            zipField.setText(searchCriteria.zip);
+            cityField.setText(searchCriteria.city);
         }
     }
 
@@ -87,8 +84,7 @@ public class GeoSearchFragment extends PageFragment {
     public void searchBtnClicked(View searchBtn) {
         if(validate()) {
             int selectedOp = selectorGroup.getCheckedRadioButtonId();
-            GeoCachingActivity geoCachingActivity = (GeoCachingActivity)getActivity();
-            SearchCriteria searchCriteria = geoCachingActivity.getSearchBuffer().getCriteria();
+            SearchCriteria searchCriteria = getSearchResult().getCriteria();
 
             SearchType searchType = SearchType.CURRENT_LOCATION;
             switch (selectedOp) {
@@ -108,6 +104,7 @@ public class GeoSearchFragment extends PageFragment {
             }
             searchCriteria.radius = Integer.parseInt(radiusField.getText().toString());
             searchCriteria.type = searchType;
+            GeoCachingActivity geoCachingActivity = (GeoCachingActivity)getActivity();
             geoCachingActivity.doSearch();
         }
     }

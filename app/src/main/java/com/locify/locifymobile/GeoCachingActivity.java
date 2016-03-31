@@ -4,6 +4,7 @@ import android.Manifest;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -41,6 +42,7 @@ public class GeoCachingActivity extends FragmentActivity
 
     private TabLayout tabLayout;
     private GeoCachingPagerAdapter pagerAdapter;
+    private ViewPager viewPager;
     private LocationManager locationManager;
     private static final long LOCATION_REFRESH_TIME = 5000L;
     private static final float LOCATION_REFRESH_DISTANCE = 10.0f;
@@ -72,28 +74,26 @@ public class GeoCachingActivity extends FragmentActivity
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.geo_items));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.geo_marker));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.geo_find));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new GeoCachingPagerAdapter(
-                getSupportFragmentManager(), tabLayout.getTabCount());
+                getSupportFragmentManager(), tabLayout.getTabCount(), searchBuffer);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                PageFragment activatedFragment = pagerAdapter.getFragmentAt(tab.getPosition());
-                if (activatedFragment != null) {
-                    activatedFragment.pageActivated();
+                Fragment pageFragment = pagerAdapter.getCurrentFragment();
+                if(tab.getPosition() == MAP_TAB_INDEX) {
+                    ItemsMapFragment mapFragment = (ItemsMapFragment)pageFragment;
+                    mapFragment.pageActivated();
                 }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                PageFragment deactivatedFragment = pagerAdapter.getFragmentAt(tab.getPosition());
-                if (deactivatedFragment != null) {
-                    deactivatedFragment.pageDectivated();
-                }
             }
 
             @Override
@@ -181,18 +181,15 @@ public class GeoCachingActivity extends FragmentActivity
 
     public void doSearch() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        GeoItemsFragment itemsFragment = (GeoItemsFragment)pagerAdapter.getFragmentAt(ITEMS_TAB_INDEX);
-        ItemsMapFragment mapFragment = (ItemsMapFragment)pagerAdapter.getFragmentAt(MAP_TAB_INDEX);
-        if(itemsFragment != null) {
-            TabLayout.Tab itemsTab = tabLayout.getTabAt(ITEMS_TAB_INDEX);
-            if(itemsTab != null) {
-                itemsTab.select();
-            }
+        TabLayout.Tab itemsTab = tabLayout.getTabAt(ITEMS_TAB_INDEX);
+        if(itemsTab != null) {
+            itemsTab.select();
+            GeoItemsFragment itemsFragment = (GeoItemsFragment)pagerAdapter.getCurrentFragment();
             itemsFragment.refreshItemList();
-            if(mapFragment != null) {
-                mapFragment.resetSearch();
-            }
         }
+//            if(mapFragment != null) {
+//                mapFragment.resetSearch();
+//            }
     }
 
     @Override

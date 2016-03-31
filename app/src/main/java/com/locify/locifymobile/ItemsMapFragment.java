@@ -56,7 +56,6 @@ public class ItemsMapFragment extends PageFragment implements OnMapReadyCallback
         }
     }
 
-    @Override
     public void pageActivated() {
         if(itemsMap == null) {
             deferMapReinit = true;
