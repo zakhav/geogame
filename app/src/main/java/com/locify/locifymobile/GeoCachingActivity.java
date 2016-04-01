@@ -235,7 +235,8 @@ public class GeoCachingActivity extends FragmentActivity
 
     private void persistSearchToBundle(Bundle bundle) {
         Gson gson = new GsonBuilder().create();
-        bundle.putString(SEARCH_EXTRA, gson.toJson(searchBuffer));
+//        bundle.putString(SEARCH_EXTRA, gson.toJson(searchBuffer));
+        bundle.putString(SEARCH_EXTRA, gson.toJson(itemsFragment.getSearchResult()));
     }
 
     @Override

@@ -43,7 +43,7 @@ public class GeoItemsFragment extends PageFragment implements RetriveItemsListen
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new GeoItemAdapter(getActivity(), searchResult, recyclerView);
+        adapter = new GeoItemAdapter(getActivity(), this, recyclerView);
         adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void loadMore() {

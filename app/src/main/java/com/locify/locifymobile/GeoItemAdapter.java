@@ -35,16 +35,16 @@ public class GeoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int METERS_IN_KM = 1000;
 
     private Activity activity;
-    private SearchResultBuffer searchResult;
+    private PageFragment fragment;
     // endless scrolling data
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
 
-    public GeoItemAdapter(Activity activity, SearchResultBuffer searchResult, RecyclerView recyclerView) {
+    public GeoItemAdapter(Activity activity, PageFragment fragment, RecyclerView recyclerView) {
         this.activity = activity;
-        this.searchResult = searchResult;
+        this.fragment = fragment;
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
             final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -71,6 +71,10 @@ public class GeoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    private SearchResultBuffer getSearchResult() {
+        return fragment.getSearchResult();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         RecyclerView.ViewHolder vh;
@@ -91,7 +95,7 @@ public class GeoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder viewHolder = (ItemViewHolder)holder;
-            List<GeoItem> items = searchResult.getItems();
+            List<GeoItem> items = getSearchResult().getItems();
 
             GeoItem item = items.get(i);
             viewHolder.setItem(item);
@@ -99,7 +103,7 @@ public class GeoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Location itemLocation = item.data.location.getPoint();
             Location center = itemLocation;
 
-            Location searchCenter = searchResult.getCenter();
+            Location searchCenter = getSearchResult().getCenter();
             if (searchCenter != null) {
                 center = searchCenter;
             }
@@ -119,7 +123,7 @@ public class GeoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        List<GeoItem> items = searchResult.getItems();
+        List<GeoItem> items = getSearchResult().getItems();
         GeoItem item = items.get(position);
 
         return item != null ? VIEW_ITEM : VIEW_PROGRESS;
@@ -127,7 +131,7 @@ public class GeoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return searchResult.getItems().size();
+        return getSearchResult().getItems().size();
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
