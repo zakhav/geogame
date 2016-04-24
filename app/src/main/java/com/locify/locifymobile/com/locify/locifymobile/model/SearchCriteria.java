@@ -1,7 +1,5 @@
 package com.locify.locifymobile.com.locify.locifymobile.model;
 
-import com.loopj.android.http.RequestParams;
-
 /**
  * Created by vitaliy on 18.03.2016.
  */

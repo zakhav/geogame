@@ -1,9 +1,13 @@
 package com.locify.locifymobile.com.locify.locifymobile.model;
 
-import com.loopj.android.http.RequestParams;
+import org.apache.http.message.BasicHeader;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vitaliy on 17.03.2016.
@@ -53,8 +57,37 @@ public class SearchResultBuffer {
         this.criteria = criteria;
     }
 
-    public RequestParams createRequestParams() {
-        RequestParams params = new RequestParams();
+//    public RequestParams createRequestParams() {
+//        RequestParams params = new RequestParams();
+//        String type = "currentLocation";
+//        String filter = "";
+//        if(criteria.type == SearchType.CITY) {
+//            type = "city";
+//            filter = criteria.city;
+//        } else if(criteria.type == SearchType.ZIP) {
+//            type = "zip";
+//            filter = criteria.zip;
+//        }
+//        params.put("searchBy", type);
+//        params.put("searchFilter", filter);
+//        params.put("searchRadius", criteria.radius);
+//        int offset = items.size();
+//        if(offset > 0) {
+//            GeoItem item = items.get(offset - 1);
+//            if(item == null) {
+//                offset--;
+//            }
+//        }
+//        params.put("offset", offset);
+//        params.put("pageSize", pageSize);
+//        return params;
+//    }
+
+    public String createRequestQuery() {
+        String query = new String();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+
         String type = "currentLocation";
         String filter = "";
         if(criteria.type == SearchType.CITY) {
@@ -76,8 +109,27 @@ public class SearchResultBuffer {
         }
         params.put("offset", offset);
         params.put("pageSize", pageSize);
-        return params;
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String paramName = entry.getKey();
+            Object paramValue = entry.getValue();
+            if(!query.isEmpty()) {
+                query = query + "&";
+            }
+
+            try {
+                query = query
+                        + URLEncoder.encode(paramName, "UTF-8")
+                        + "="
+                        + URLEncoder.encode(paramValue.toString(), "UTF-8");
+            } catch(UnsupportedEncodingException uee) {
+                // Ignore
+            }
+        }
+
+        return query;
     }
+
 
     public long getTotal() {
         return total;
