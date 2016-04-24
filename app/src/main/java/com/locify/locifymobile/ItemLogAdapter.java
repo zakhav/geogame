@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.locify.locifymobile.com.locify.locifymobile.model.GeoItemDetails;
@@ -49,7 +50,10 @@ public class ItemLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             Resources res = viewHolder.itemView.getResources();
             viewHolder.itemUser.setText(Html.fromHtml(res.getString(R.string.log_user, item.data.user.username)));
-            viewHolder.itemComment.setText(Html.fromHtml(res.getString(R.string.log_comment, item.data.comment)));
+//            viewHolder.itemComment.setText(Html.fromHtml(res.getString(R.string.log_comment, item.data.comment)));
+            String logCommentContent = res.getString(R.string.log_comment, item.data.comment);
+//            viewHolder.itemComment.loadData(logCommentContent, "text/html", null);
+            viewHolder.itemComment.loadDataWithBaseURL(null, logCommentContent, "text/html", null, null);
         }
     }
 
@@ -67,13 +71,14 @@ public class ItemLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public LogItem item;
         public TextView itemDate;
         public TextView itemUser;
-        public TextView itemComment;
+//        public TextView itemComment;
+        public WebView itemComment;
 
         public ItemLogViewHolder(View itemView) {
             super(itemView);
             itemDate = (TextView)itemView.findViewById(R.id.log_date);
             itemUser = (TextView)itemView.findViewById(R.id.log_user);
-            itemComment = (TextView)itemView.findViewById(R.id.log_comment);
+            itemComment = (WebView)itemView.findViewById(R.id.log_comment);
         }
 
         public void setItem(LogItem item) {

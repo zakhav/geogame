@@ -26,7 +26,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/log_user"
             android:layout_below="@+id/log_date"/>
+        <!--
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/log_comment"
+            android:layout_below="@+id/log_user"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"/>
+        -->
+        <WebView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/log_comment"

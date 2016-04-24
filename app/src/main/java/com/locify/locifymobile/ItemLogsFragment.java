@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -32,7 +33,8 @@ public class ItemLogsFragment extends ItemDetailsFragment {
 
     TextView itemDateHidden;
     TextView itemLastFound;
-    TextView itemDescription;
+//    TextView itemDescription;
+    WebView webDescription;
 
     RecyclerView.LayoutManager layoutManager;
     ItemLogAdapter adapter;
@@ -53,7 +55,8 @@ public class ItemLogsFragment extends ItemDetailsFragment {
 
         itemDateHidden = (TextView)rootView.findViewById(R.id.date_hidden);
         itemLastFound = (TextView)rootView.findViewById(R.id.last_found);
-        itemDescription = (TextView)rootView.findViewById(R.id.item_description);
+//        itemDescription = (TextView)rootView.findViewById(R.id.item_description);
+        webDescription = (WebView)rootView.findViewById(R.id.web_description);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.item_logs_view);
 
@@ -78,7 +81,8 @@ public class ItemLogsFragment extends ItemDetailsFragment {
         itemUser.setText(Html.fromHtml(res.getString(R.string.item_owner, item.data.owner.username)));
         itemDifficulty.setRating((float) item.data.difficulty);
 
-        itemDescription.setText(Html.fromHtml(item.data.getDescription()));
+//        itemDescription.setText(Html.fromHtml(item.data.getDescription()));
+        webDescription.loadDataWithBaseURL(null, item.data.getDescription(), "text/html", null, null);
 
         itemDateHidden.setText(Html.fromHtml(res.getString(R.string.date_hidden, dateFormatter.format(item.data.dateHidden))));
         itemLastFound.setText(Html.fromHtml(res.getString(R.string.last_found, dateFormatter.format(item.data.lastModified))));
